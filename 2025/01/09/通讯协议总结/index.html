@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>通讯协议总结 - BONESKEEP&#039; BLOG</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BONESKEEP&#039; BLOG"><meta name="msapplication-TileImage" content="/img/headlogo.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BONESKEEP&#039; BLOG"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="通讯协议总结 原贴：https:&amp;#x2F;&amp;#x2F;blog.csdn.net&amp;#x2F;weixin_45726161&amp;#x2F;article&amp;#x2F;details&amp;#x2F;146225631  1. 串口通信 简介：成本低、容易使用、线路简单，可实现两个设备的互相通信。 原理：简单双向串口通信 有两根通信线（发送端TX和接收端RX），TX和RX交叉连接，只需单项数据传输时可只接一根通信线。   电平标准：不同设备可能使用不同电平标准，电平不"><meta property="og:type" content="blog"><meta property="og:title" content="通讯协议总结"><meta property="og:url" content="https://boneskeep.github.io/2025/01/09/%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE%E6%80%BB%E7%BB%93/"><meta property="og:site_name" content="BONESKEEP&#039; BLOG"><meta property="og:description" content="通讯协议总结 原贴：https:&amp;#x2F;&amp;#x2F;blog.csdn.net&amp;#x2F;weixin_45726161&amp;#x2F;article&amp;#x2F;details&amp;#x2F;146225631  1. 串口通信 简介：成本低、容易使用、线路简单，可实现两个设备的互相通信。 原理：简单双向串口通信 有两根通信线（发送端TX和接收端RX），TX和RX交叉连接，只需单项数据传输时可只接一根通信线。   电平标准：不同设备可能使用不同电平标准，电平不"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://boneskeep.github.io/img/leetcode/Shangri-La%20Frontier-01.jpg"><meta property="article:published_time" content="2025-01-09T11:00:00.000Z"><meta property="article:modified_time" content="2025-03-24T15:15:38.732Z"><meta property="article:author" content="BONESKEEP"><meta property="article:tag" content="Linux"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://boneskeep.github.io/img/leetcode/Shangri-La%20Frontier-01.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://boneskeep.github.io/2025/01/09/%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE%E6%80%BB%E7%BB%93/"},"headline":"通讯协议总结","image":["https://boneskeep.github.io/img/leetcode/Shangri-La%20Frontier-01.jpg"],"datePublished":"2025-01-09T11:00:00.000Z","dateModified":"2025-03-24T15:15:38.732Z","author":{"@type":"Person","name":"BONESKEEP"},"publisher":{"@type":"Organization","name":"BONESKEEP' BLOG","logo":{"@type":"ImageObject","url":"https://boneskeep.github.io/img/head_circle.png"}},"description":"通讯协议总结 原贴：https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45726161&#x2F;article&#x2F;details&#x2F;146225631  1. 串口通信 简介：成本低、容易使用、线路简单，可实现两个设备的互相通信。 原理：简单双向串口通信 有两根通信线（发送端TX和接收端RX），TX和RX交叉连接，只需单项数据传输时可只接一根通信线。   电平标准：不同设备可能使用不同电平标准，电平不"}</script><link rel="canonical" href="https://boneskeep.github.io/2025/01/09/%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE%E6%80%BB%E7%BB%93/"><link rel="icon" href="/img/headlogo.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/head_circle.png" alt="BONESKEEP&#039; BLOG" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives/">Archives</a><a class="navbar-item" href="/categories/">Categories</a><a class="navbar-item" href="/tags/">Tags</a><a class="navbar-item" href="/about/">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub" href="https://github.com/BONESKEEP">GitHub</a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/BONESKEEP/BONESKEEP.github.io"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="通讯协议总结"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-01-09T11:00:00.000Z" title="2025/1/9 19:00:00">2025-01-09</time>发表</span><span class="level-item"><time dateTime="2025-03-24T15:15:38.732Z" title="2025/3/24 23:15:38">2025-03-24</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/Linux/">Linux</a><span> / </span><a class="link-muted" href="/categories/Linux/App/">App</a></span><span class="level-item">25 分钟读完 (大约3779个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">通讯协议总结</h1><div class="content"><h3 id="通讯协议总结"><a href="#通讯协议总结" class="headerlink" title="通讯协议总结"></a>通讯协议总结</h3><hr>
+<p>原贴：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45726161/article/details/146225631">https://blog.csdn.net/weixin_45726161/article/details/146225631</a></p>
+<hr>
+<p><strong>1. 串口通信</strong></p>
+<p>简介：<strong>成本低、容易使用、线路简单</strong>，可实现两个设备的互相通信。</p>
+<p><strong>原理</strong>：简单双向串口通信 有<strong>两根通信线（发送端TX和接收端RX）</strong>，TX和RX交叉连接，只需单项数据传输时可只接一根通信线。</p>
+<img src="https://i-blog.csdnimg.cn/direct/45fe94161a304cb1a28fe29f19ac8a74.png" alt="img" style="zoom:67%;" />
+
+<p>电平标准：<strong>不同设备可能使用不同电平标准，电平不匹配时需要电平转换芯片进行适配</strong>。</p>
+<table>
+<thead>
+<tr>
+<th align="center">电平标准</th>
+<th align="center">电压范围</th>
+<th align="center">常用设备</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TTL电平</td>
+<td align="center">+3.3V 或 +5V 表示 1, 0V表示 0</td>
+<td align="center">单片机和嵌入式设备</td>
+</tr>
+<tr>
+<td align="center">RS-232电平</td>
+<td align="center">-3V<del>-15V 表示 1，+3V</del>+15V 表示 0</td>
+<td align="center">传统 PC 串口通信</td>
+</tr>
+<tr>
+<td align="center">RS-485电平</td>
+<td align="center">两线压差 +2V<del>+6V 表示 1，-2V</del>-6V 表示 0</td>
+<td align="center">采用差分信号，抗干扰强，适用工业总线</td>
+</tr>
+</tbody></table>
+<p>不同电平标准的设备通信时，可使用 MAX232（TTL ↔ RS232） 或 MAX485（TTL ↔ RS485） 等电平转换芯片。</p>
+<p><strong>串口参数及时序</strong>：</p>
+<ol>
+<li><strong>波特率</strong>：串口通信的速率（发送和接收约定好速率），决定每隔多久发送一位（或者每秒传输的bit位数），单位为bps（bits per second，位&#x2F;秒）。例如<strong>9600 bps：每秒传输 9600 个 bit，或者传输一个bit需要1&#x2F;9600s。</strong></li>
+<li><strong>起始位</strong>：标志一个数据帧的<strong>开始</strong>，<strong>固定为低电平</strong>；因为<strong>空闲状态是低电平</strong>。</li>
+<li><strong>数据位</strong>：<strong>数据帧的有效载荷</strong>，<strong>1为高电平，0为低电平</strong>，<strong>低位先行，左边为低位。</strong></li>
+<li><strong>校验位</strong>：用于数据验证，根据数据位计算得来；<strong>校验位为0或1</strong>，具体校验位的值根据奇校验还是偶校验得出（<strong>奇校验：保证数据位1的个数为奇数</strong>；<strong>偶校验：保证数据位1的个数是偶数</strong>）</li>
+<li><strong>停止位</strong>：用于数据帧间隔，<strong>固定为高电平</strong>，为下一帧的起始位低电平准备</li>
+</ol>
+<p><img src="https://i-blog.csdnimg.cn/direct/c789c5768c60451f9fb2abd3b87f373c.png" alt="img"></p>
+<p><img src="https://i-blog.csdnimg.cn/direct/0efe549cc183431f8bfabb103fc9697e.png" alt="img"></p>
+<hr>
+<p><strong>2. UART(USART)</strong></p>
+<p><strong>UART</strong>（通用异步收发传输） 和 USART（通用同步&#x2F;异步收发传输） 是<strong>串口通信的一种实现方式</strong>，其基本<strong>原理与串口通信一致</strong>。</p>
+<p>其中<strong>UART 是一种常见的串行通信方式</strong>，广泛应用于<strong>RS-232、RS-422、RS-485 及 TTL 电平通信</strong>。</p>
+<p><strong>RS-232 采用点对点通信</strong>模式，仅支持两个设备直接连接，适用于<strong>短距离、本地设备</strong>间的<strong>全双工通信</strong>。</p>
+<p><strong>RS-485 支持多设备总线通信</strong>，具备<strong>较长的传输距离和较强的抗干扰能力</strong>，但通常<strong>采用半双工通信模式</strong>。</p>
+<hr>
+<p><strong>3. I2C</strong></p>
+<p>简介：<strong>串行</strong>数据总线，一根是<strong>双向的数据线SDA</strong>,一根是<strong>时钟线SCL</strong>。两条线可以挂多个设备，一般IIC设备里有个<strong>固化的地址</strong>，只有传输对应固化地址时才会响应。<strong>基本谁控制时钟线谁就是主设备</strong>。</p>
+<p>I2C优缺点：</p>
+<p>​	优点：<strong>硬件资源节约</strong>，协议设计精巧，易用，使用广泛易移植。</p>
+<p>​	缺点：<strong>传输速率较慢</strong>。<br><strong>原理：</strong>两根通信线：<strong>时钟线SCL</strong>（Serial Clock）、<strong>数据线SDA</strong>（Serial Data），工作模式为<strong>同步</strong>（双方有时钟线SCL），<strong>半双工</strong>，带<strong>数据应答</strong>，支持总线挂载多设备（一主多从、多主多从），<strong>数据位一般7位或10位</strong>。</p>
+<p>所有I2C设备的时钟线SCL连在一起，SDA连在一起设备的SCL和SDA均要配置成<strong>开漏输出模式</strong>；SCL和SDA<strong>各添加一个上拉电阻</strong>，阻值一般为4.7KΩ左右。<strong>从设备下拉</strong>，总线处于<strong>低电平</strong>；<strong>从设备放开</strong>，从设备相当于浮空，但<strong>由于上拉电阻</strong>作用，总线处于<strong>高电平</strong>。<strong>只要有一个从设备下拉，总线就处于低电平</strong>。<br><img src="https://i-blog.csdnimg.cn/direct/cd39ffc1ff3a49a18049457288d7d4cf.png" alt="img"></p>
+<p><strong>时序：</strong></p>
+<p>初始化：SCL SDA均为高。</p>
+<p>开始信号：SCL保持高电平，SDA由高变低，SCL拉低。</p>
+<p>停止信号：SCL拉高，SDA由低变高。</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/c2638249fe6f4dceb1258c84d40a9a50.png" alt="img"></p>
+<p><strong>（1）主机发送一个字节</strong>——SCL低电平发数据 SCL高电平读数据</p>
+<p>SCL低电平期间，主机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，<strong>从机将在SCL高电平期间读取数据位</strong>，所以<strong>SCL高电平期间SDA不允许有数据变化</strong>，<strong>依次循环上述过程8次</strong>，<strong>即可发送一个字节</strong>。SCL低电平的时候发送一方通过拉低或者释放SDA发送0或者1，SCL释放处于高电平的时候SDA不允许有数据变化。<br><img src="https://i-blog.csdnimg.cn/direct/c4d0f6fb3f0c452fbbfb1d1f3b8ecbe7.png" alt="img"></p>
+<p><strong>（2）主机接收一个字节</strong>——主机在接收前要释放SDA给从机，从机获得发送权</p>
+<p>SCL低电平期间，从机将数据位依次放到SDA线上（<strong>高位先行</strong>），然后释放SCL，主机将在SCL高电平期间读取数据位，所以SCL高电平期间SDA不允许有数据变化，依次循环上述过程8次，即可接收一个字节<strong>（主机在接收之前，需要释放SDA，意思就是让从机获得发送权）。</strong></p>
+<p><strong>（3）发送应答</strong>——接收后发送应答数据</p>
+<p>主机在接收完一个字节之后，在下一个时钟发送一位数据，数据0表示应答，数据1表示非应答</p>
+<p><strong>（4）接收应答</strong>——发送后接收应答数据</p>
+<p>主机在发送完一个字节之后，在下一个时钟接收一位数据，判断从机是否应答，数据0表示应答，数据1表示非应答<strong>（主机在接收之前，需要释放SDA，释放相当于放手SDA处于高电平，要不然SDA时钟被主机拉着处于低电平，从机没办法发送0和1）</strong></p>
+<p><strong>（5）指定地址写</strong></p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，写入指定数据（Data）</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/2dd2360accc047a79ed4fa5c8839447c.png" alt="img"></p>
+<p><strong>（6）当前地址读</strong></p>
+<p>对于指定设备（Slave Address），在当前地址指针（具体哪个寄存器）指示的地址下，读取从机数据（Data）</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/0d69ae692ff44750ac4cede307e1659f.png" alt="img"></p>
+<p><strong>（7）指定地址读</strong></p>
+<p>对于指定设备（Slave Address），在指定地址（Reg Address）下，读取从机数据（Data）；<strong>写两次，写设备地址和寄存器地址（与当前地址读的区别就是多写一次寄存器的地址）</strong></p>
+<p><img src="https://i-blog.csdnimg.cn/direct/c8ecdc45e78e454cbd2170de35158636.png" alt="img"></p>
+<hr>
+<p><strong>4. SPI</strong></p>
+<p>简介：SPI（Serial Peripheral Interface）是由Motorola公司开发的一种<strong>通用数据总线</strong>。<strong>四根通信线</strong>：SCK（Serial Clock）、MOSI（Master Output Slave Input）、MISO（Master Input Slave Output）、SS（Slave Select）从机选择，是一种<strong>同步</strong>（有<strong>时钟线SCK</strong>，相当于I2C的SCL），<strong>全双工</strong>（<strong>主机发送和接收各占一条线</strong>）的协议， 支持<strong>总线挂载多设备</strong>（<strong>一主多从</strong>，不支持多主机）。</p>
+<p>优缺点：</p>
+<p>​	· 支持全双工操作，操作简单，<strong>数据传输速率较高</strong>（相比于I2C的优点，I2C的传输速率慢）； </p>
+<p>​	· 需要<strong>占用主机较多的口线</strong>，只支持<strong>单个主机</strong>，<strong>没有应答机制</strong>确认是否接收到数据（相比于I2C的缺点）。</p>
+<p><strong>原理：</strong></p>
+<p>所有SPI设备的SCK、MOSI、MISO分别连在一起，<strong>主机另外引出多条SS控制线</strong>，<strong>分别接到各从机的SS引脚</strong>，<strong>输出引脚配置为推挽输出</strong>，<strong>输入引脚配置为浮空或上拉输入</strong>。推挽输出驱动能力强，<strong>SCK上升沿和下降沿都迅速</strong>，不像I2C上升沿慢。</p>
+<p>不同于<strong>I2C发送寻址地址寻找从机</strong>，<strong>SPI通过从机选择线SS</strong>来寻找具体哪个从机SS线低电平有效。</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/258b5c65d65547dd96beec9125fdddee.png" alt="img"></p>
+<p><strong>移位示意图</strong>——循环式数据互换</p>
+<p>SPI的主机和从机之间的<strong>数据传输就是一个数据移位的过程</strong>（主机把自身数据移给从机，同时从机把数据移给主机，在同一个时钟信号SCK的控制下）。<strong>高位先行</strong>，左移波特率发生器即SCK的上升沿，所有移位寄存器向左移动一位，把两边寄存器的最高位放在MISO和MOSI的数据线上； 下降沿的时候，主机和从机都会进行数据的采样输入，被发送的bit到达目的地； 这样<strong>八个时序</strong>之后，主机和从机的数据互换，实现了彼此的数据交换。<br><img src="https://i-blog.csdnimg.cn/direct/9b7205a36ee64f00a716849dfa38ce93.png" alt="img"></p>
+<p><strong>(1)时序：</strong></p>
+<p>起始条件：SS从高电平切换到低电平。终止条件：SS从低电平切换到高电平。<strong>SS为低电平有效，通信过程中要时钟保持为低电平。</strong></p>
+<p><img src="https://i-blog.csdnimg.cn/direct/a04c59b1cfa1494a942ad7d4d3a74a2f.png" alt="img"></p>
+<p><strong>(2)时钟极性与时钟相位</strong></p>
+<p>时钟极性（CPOL）：<strong>表示 SPI 在空闲时, 时钟信号是高电平还是低电平</strong>。若CPOL &#x3D;1, 设备在空闲时 SCK时钟信号为高电平.。CPOL&#x3D;0, SCK为低电平。</p>
+<p>时钟相位（CPHA）：<strong>表示SPI在采样数据时是在SCK第一个边沿还是第二个边沿</strong>，第一个边沿CPHA&#x3D;0,第二个边沿CPHA&#x3D;1.<br>如何判断：<strong>SCK的空闲时候的电压，是0还是1，决定了CPOL是0还是1</strong>，<strong>数据采样时刻对应着的SCK的电平，是第一个边沿还是第二个边沿，对应着CPHA为0还是1</strong>。</p>
+<p><strong>(3)交换一个字节（模式0）：</strong></p>
+<p>模式0的时候：CPOL&#x3D;0：空闲状态时，SCK为低电平 CPHA&#x3D;0：SCK第一个边沿移入数据（<strong>上升沿移入数据</strong>），第二个边沿移出数据（<strong>下降沿移出数据</strong>）。</p>
+<p>模式0是最常用的，S起始位的时候，下降的同时移出数据MOSI写入，SCK上升沿移入数据，SCK下降沿移出数据。</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/87f08c4792cd4937a89e67aaad652360.png" alt="img"></p>
+<p> MISO最开始的横线代表为高阻态，在一个从机被选中的时候<strong>为了避免别的从机的干扰</strong>，置为高阻态即为没有输入。</p>
+<p><strong>(4)发送指令</strong></p>
+<p>向SS指定的设备，发送指令（0x06），这里使用模式0，空闲时候SCK&#x3D;0，上升沿采样读取数据，下降沿移除数据发送。</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/e993e9f73f9840b68304b01d47008994.png" alt="img"></p>
+<p> 从机没有数据发送给主机，所以这里全是1挂起。</p>
+<p><strong>(5)指定地址写</strong></p>
+<p>向SS指定的设备，发送写指令（0x02），随后在指定地址（Address[23:0]）下，写入指定数据（Data）</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/9392b631738249fdbce28cf18e32422b.png" alt="img"></p>
+<p><strong>(6)指定地址读</strong></p>
+<p>向SS指定的设备，发送读指令（0x03） 随后在指定地址（Address[23:0]）下，读取从机数据（Data）</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/b44590fd2a9f420f9f83350c29b82d48.png" alt="img"></p>
+<hr>
+<p><strong>5 DDS</strong></p>
+<p>DDS（Data Distribution Service）是一种<strong>实时发布-订阅</strong>（Pub-Sub）通信协议，用于<strong>分布式系统</strong>中的<strong>高效、低延迟数据交换</strong>。它支持<strong>数据自动发现</strong>、动态扩展、<strong>QoS（服务质量）管理</strong>，无需服务器中转，<strong>设备间可直接通信</strong>（明显区分于MQTT）。DDS 适用于工业自动化、航空航天、汽车电子、机器人等需要高可靠性和实时性的场景。</p>
+<p>以下是DDS协议中的一些概念：</p>
+<p>（1）Domain：代表一个通信平面，由Domain ID唯一标识，只有在同一个域内的通信实体才可以通信；如果考虑车内通信，可以只划分1个Domain，也可以按照交互规则或其他规则，定义多个Domain；</p>
+<p>（2）Domain Participant：代表域内通信的应用程序的本地成员身份，简单来说，就是说明同一数据域内的通信成员；</p>
+<p>（3）Topic：是数据的抽象概念，由TopicName标识，关联相应数据的数据类型(DataType)，如果把车内所涉及的所有Topic集合在一起，这样就形成一个虚拟的全局数据空间“Global Data Space”，进一步弱化了节点的概念，所以域参与者已经不是节点的概念了；</p>
+<p>（4）DataWriter：数据写入者，类似<strong>缓存</strong>，把需要发布的主题数据从应用层写入到DataWriter中；</p>
+<p>（5）DataReader：数据读取者，同样可以理解为一种<strong>缓存</strong>，从订阅者得到主题数据，随之传给应用层；</p>
+<p>（6）Publisher：发布者，发布主题数据，<strong>至少与1个DataWriter关联</strong>，通过调用DataWriter的相关函数将数据发出去；</p>
+<p>（7）Subscriber：订阅者，订阅主题数据，<strong>至少与1个DataReader关联</strong>。当数据到达时，应用程序可能忙于执行其他操作或应用程序只是等待该消息时，这样就会存在两种情况，同步访问和异步通知。</p>
+<p>根据前面介绍，我们清楚了DDS是一个以数据为中心的中间件协议和API标准，意为用户只关心自己想要的数据，数据通过Topic进行标识，这样发布者根据主题发布数据，订阅者根据自己感兴趣的主题订阅数据。</p>
+<p><img src="https://i-blog.csdnimg.cn/direct/94179a91cd954db7b7d2dc3a58e869f4.png" alt="img"></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>通讯协议总结</p><p><a href="https://boneskeep.github.io/2025/01/09/通讯协议总结/">https://boneskeep.github.io/2025/01/09/通讯协议总结/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>BONESKEEP</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2025-01-09</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2025-03-24</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linux/">Linux</a></div><!--!--></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/img/wechat.jpg" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2025/02/06/2025-2-6-Leetcode-Hot100-No.3-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Leetcode Hot100 3. 无重复字符的最长子串 字符串 哈希表 滑动窗口</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2025/01/08/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"><span class="level-item">进程间通信</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/head_circle.png" alt="BONESKEEP"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">BONESKEEP</p><p class="is-size-6 is-block">硕士研究生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Lanzhou University of Technology</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">76</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">14</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/BONESKEEP" target="_blank" rel="me noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Github" href="https://github.com/BONESKEEP"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="QQ" href="https://qm.qq.com/q/4kKCYBUmaA"><i class="fab fab fa-qq"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Mail" href="mailto:coolhui2020@163.com"><i class="fas fa-envelope"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#通讯协议总结"><span class="level-left"><span class="level-item">1</span><span class="level-item">通讯协议总结</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://github.com/BONESKEEP" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Github</span></span><span class="level-right"><span class="level-item tag">github.com</span></span></a></li><li><a class="level is-mobile" href="https://boneskeep.github.io/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Blog</span></span><span class="level-right"><span class="level-item tag">boneskeep.github.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Game/"><span class="level-start"><span class="level-item">Game</span></span><span class="level-end"><span class="level-item tag">2</span></span></a><ul><li><a class="level is-mobile" href="/categories/Game/Games101/"><span class="level-start"><span class="level-item">Games101</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/Kunpeng/"><span class="level-start"><span class="level-item">Kunpeng</span></span><span class="level-end"><span class="level-item tag">5</span></span></a><ul><li><a class="level is-mobile" href="/categories/Kunpeng/Limb/"><span class="level-start"><span class="level-item">Limb</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/Linux/"><span class="level-start"><span class="level-item">Linux</span></span><span class="level-end"><span class="level-item tag">39</span></span></a><ul><li><a class="level is-mobile" href="/categories/Linux/App/"><span class="level-start"><span class="level-item">App</span></span><span class="level-end"><span class="level-item tag">39</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/Python/"><span class="level-start"><span class="level-item">Python</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/"><span class="level-start"><span class="level-item">学术</span></span><span class="level-end"><span class="level-item tag">7</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/3DGS/"><span class="level-start"><span class="level-item">3DGS</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/NeRF/"><span class="level-start"><span class="level-item">NeRF</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/"><span class="level-start"><span class="level-item">三维重建</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/%E5%91%BD%E4%BB%A4/"><span class="level-start"><span class="level-item">命令</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/%E7%AE%97%E6%B3%95/"><span class="level-start"><span class="level-item">算法</span></span><span class="level-end"><span class="level-item tag">22</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E7%AE%97%E6%B3%95/Leetcode/"><span class="level-start"><span class="level-item">Leetcode</span></span><span class="level-end"><span class="level-item tag">22</span></span></a></li></ul></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><figure class="media-left"><a class="image" href="/2025/03/21/2025-3-21-Leetcode-Hot100-No.763-%E5%88%92%E5%88%86%E5%AD%97%E6%AF%8D%E5%8C%BA%E9%97%B4/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 763. 划分字母区间 贪心 字符串"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-21T11:00:00.000Z">2025-03-21</time></p><p class="title"><a href="/2025/03/21/2025-3-21-Leetcode-Hot100-No.763-%E5%88%92%E5%88%86%E5%AD%97%E6%AF%8D%E5%8C%BA%E9%97%B4/">Leetcode Hot100 763. 划分字母区间 贪心 字符串</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.45-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8FII/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 45. 跳跃游戏 II 贪心算法"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-20T07:00:00.000Z">2025-03-20</time></p><p class="title"><a href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.45-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8FII/">Leetcode Hot100 45. 跳跃游戏 II 贪心算法</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.55-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 55. 跳跃游戏 贪心算法"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-20T03:00:00.000Z">2025-03-20</time></p><p class="title"><a href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.55-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/">Leetcode Hot100 55. 跳跃游戏 贪心算法</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/19/2025-3-19-Leetcode-Hot100-No.24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 24. 两两交换链表中的节点 递归/迭代"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-19T11:00:00.000Z">2025-03-19</time></p><p class="title"><a href="/2025/03/19/2025-3-19-Leetcode-Hot100-No.24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/">Leetcode Hot100 24. 两两交换链表中的节点 递归/迭代</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/18/2025-3-18-Leetcode-Hot100-No.19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E7%BB%93%E7%82%B9/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 19. 删除链表的倒数第 N 个结点 栈 双指针"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-18T13:00:00.000Z">2025-03-18</time></p><p class="title"><a href="/2025/03/18/2025-3-18-Leetcode-Hot100-No.19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E7%BB%93%E7%82%B9/">Leetcode Hot100 19. 删除链表的倒数第 N 个结点 栈 双指针</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/03/"><span class="level-start"><span class="level-item">三月 2025</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/02/"><span class="level-start"><span class="level-item">二月 2025</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/01/"><span class="level-start"><span class="level-item">一月 2025</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/12/"><span class="level-start"><span class="level-item">十二月 2024</span></span><span class="level-end"><span class="level-item tag">12</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/10/"><span class="level-start"><span class="level-item">十月 2024</span></span><span class="level-end"><span class="level-item tag">29</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">九月 2024</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/06/"><span class="level-start"><span class="level-item">六月 2024</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/03/"><span class="level-start"><span class="level-item">三月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/12/"><span class="level-start"><span class="level-item">十二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/09/"><span class="level-start"><span class="level-item">九月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Games101/"><span class="tag">Games101</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Kunpeng/"><span class="tag">Kunpeng</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Leetcode/"><span class="tag">Leetcode</span><span class="tag">22</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">39</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Python/"><span class="tag">Python</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E6%9C%AF/"><span class="tag">学术</span><span class="tag">7</span></a></div></div></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/head_circle.png" alt="BONESKEEP&#039; BLOG" height="28"></a><p class="is-size-7"><span>&copy; 2025 BONESKEEP</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">Open Source</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>

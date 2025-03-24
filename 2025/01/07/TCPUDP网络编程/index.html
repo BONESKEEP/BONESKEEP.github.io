@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>TCP/UDP网络编程 - BONESKEEP&#039; BLOG</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="BONESKEEP&#039; BLOG"><meta name="msapplication-TileImage" content="/img/headlogo.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="BONESKEEP&#039; BLOG"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="TCP&amp;#x2F;UDP网络编程 网络编程有三个要素，分别是IP地址、端口号和通信协议。 一、IP地址网络中的计算机使用IP地址来进行唯一标识，IP地址有IPv4和IPv6两种类型。IPv4采用十进制或二进制表示形式，十进制是一种比较常用的表示形式，如192.168.1.131，IPv6采用十六进制表示形式，一般不常用。 查看IP地址相关信息： Windows命令——ipconfig Linux或"><meta property="og:type" content="blog"><meta property="og:title" content="TCP/UDP网络编程"><meta property="og:url" content="https://boneskeep.github.io/2025/01/07/TCPUDP%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><meta property="og:site_name" content="BONESKEEP&#039; BLOG"><meta property="og:description" content="TCP&amp;#x2F;UDP网络编程 网络编程有三个要素，分别是IP地址、端口号和通信协议。 一、IP地址网络中的计算机使用IP地址来进行唯一标识，IP地址有IPv4和IPv6两种类型。IPv4采用十进制或二进制表示形式，十进制是一种比较常用的表示形式，如192.168.1.131，IPv6采用十六进制表示形式，一般不常用。 查看IP地址相关信息： Windows命令——ipconfig Linux或"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://boneskeep.github.io/img/leetcode/Shangri-La%20Frontier-01.jpg"><meta property="article:published_time" content="2025-01-07T11:00:00.000Z"><meta property="article:modified_time" content="2025-03-24T15:14:39.555Z"><meta property="article:author" content="BONESKEEP"><meta property="article:tag" content="Linux"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://boneskeep.github.io/img/leetcode/Shangri-La%20Frontier-01.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://boneskeep.github.io/2025/01/07/TCPUDP%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"},"headline":"TCP/UDP网络编程","image":["https://boneskeep.github.io/img/leetcode/Shangri-La%20Frontier-01.jpg"],"datePublished":"2025-01-07T11:00:00.000Z","dateModified":"2025-03-24T15:14:39.555Z","author":{"@type":"Person","name":"BONESKEEP"},"publisher":{"@type":"Organization","name":"BONESKEEP' BLOG","logo":{"@type":"ImageObject","url":"https://boneskeep.github.io/img/head_circle.png"}},"description":"TCP&#x2F;UDP网络编程 网络编程有三个要素，分别是IP地址、端口号和通信协议。 一、IP地址网络中的计算机使用IP地址来进行唯一标识，IP地址有IPv4和IPv6两种类型。IPv4采用十进制或二进制表示形式，十进制是一种比较常用的表示形式，如192.168.1.131，IPv6采用十六进制表示形式，一般不常用。 查看IP地址相关信息： Windows命令——ipconfig Linux或"}</script><link rel="canonical" href="https://boneskeep.github.io/2025/01/07/TCPUDP%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><link rel="icon" href="/img/headlogo.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/head_circle.png" alt="BONESKEEP&#039; BLOG" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives/">Archives</a><a class="navbar-item" href="/categories/">Categories</a><a class="navbar-item" href="/tags/">Tags</a><a class="navbar-item" href="/about/">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="GitHub" href="https://github.com/BONESKEEP">GitHub</a><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/BONESKEEP/BONESKEEP.github.io"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><div class="card-image"><span class="image is-7by3"><img class="fill" src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="TCP/UDP网络编程"></span></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-01-07T11:00:00.000Z" title="2025/1/7 19:00:00">2025-01-07</time>发表</span><span class="level-item"><time dateTime="2025-03-24T15:14:39.555Z" title="2025/3/24 23:14:39">2025-03-24</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/Linux/">Linux</a><span> / </span><a class="link-muted" href="/categories/Linux/App/">App</a></span><span class="level-item">39 分钟读完 (大约5814个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">TCP/UDP网络编程</h1><div class="content"><h3 id="TCP-UDP网络编程"><a href="#TCP-UDP网络编程" class="headerlink" title="TCP&#x2F;UDP网络编程"></a>TCP&#x2F;UDP网络编程</h3><hr>
+<p>网络编程有三个要素，分别是IP地址、端口号和通信协议。</p>
+<h2 id="一、IP地址"><a href="#一、IP地址" class="headerlink" title="一、IP地址"></a><strong>一、IP地址</strong></h2><p><strong>网络中的计算机使用IP地址来进行唯一标识</strong>，IP地址有<strong>IPv4和IPv6两种类型</strong>。<strong>IPv4采用十进制或二进制表示形式</strong>，十进制是一种比较常用的表示形式，如<code>192.168.1.131</code>，<strong>IPv6采用十六进制表示形式，一般不常用</strong>。</p>
+<p>查看IP地址相关信息：</p>
+<p>Windows命令——<code>ipconfig</code></p>
+<p>Linux或Mac——ifconfig&#96;命令</p>
+<h2 id="二、端口号"><a href="#二、端口号" class="headerlink" title="二、端口号"></a><strong>二、端口号</strong></h2><p>端口号是计算机中的<strong>应用程序的一个整数数字标号，用来区分不同的应用程序</strong>。</p>
+<p><code>0 ~ 1023</code> 为被<strong>系统使用或保留的端口号</strong>，<code>0 ~ 65535</code>为有效的端口号，也就是说我们要对一些程序定义端口号的时候，要<strong>选择1024 ~ 65535范围内的整数数字</strong>。</p>
+<ul>
+<li>ftp服务器：使用21号端口。</li>
+<li>ssh服务器：使用22号端口。</li>
+<li>telnet服务器：使用23号端口。</li>
+<li>http服务器：使用80号端口。</li>
+<li>https服务器：使用443号端口。</li>
+</ul>
+<h2 id="三、通信协议"><a href="#三、通信协议" class="headerlink" title="三、通信协议"></a><strong>三、通信协议</strong></h2><p>说的通俗一点，通信协议就是<strong>网络通信中的规则</strong>，分为TCP协议和UDP协议两种。</p>
+<h3 id="第一种：TCP协议"><a href="#第一种：TCP协议" class="headerlink" title="第一种：TCP协议"></a><strong>第一种：TCP协议</strong></h3><p>英文名：Transmission Control Protocol 中文名：<strong>传输控制协议</strong> 协议说明：TCP是一种<strong>面向连接的</strong>、<strong>可靠的、基于字节流的传输层通信协议</strong>。</p>
+<p>举例：传输前要建立连接，比如打电话，需要双方都接通，才能进行对话。</p>
+<p>特点：效率低，数据传输比较安全，因为有重传机制。</p>
+<ul>
+<li>面向连接的</li>
+<li>可靠的</li>
+<li>面向字节流的</li>
+</ul>
+<hr>
+<h4 id="确认应答-ACK-机制"><a href="#确认应答-ACK-机制" class="headerlink" title="确认应答(ACK)机制"></a>确认应答(ACK)机制</h4><p>对于TCP双方发送的每一个报文，<strong>作为接收的一方都需要发送确认应答信息</strong>（ACK）来表示自己已经接收到了对端发送的报文，这样的机制即为确认应答机制，而这种机制保证了对端接收到了信息，也即保证了发送数据的<strong>可靠性</strong>。</p>
+<p>TCP将每个字节的数据都进行了编号. 即为序列号;</p>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/b90309c179712d6c4b4fc81f75ef93cd.png" alt="在这里插入图片描述" style="zoom: 67%;" />
+
+<p>那么主机A与B进行数据传输的时候如下图:</p>
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/929767377829b9d64c3c7bee88a77b24.png" alt="在这里插入图片描述"></p>
+<p>应答时ACK标志位置1,每一个ACK都带有对应的<strong>确认序列号</strong>, 意思是告诉发送者, 我已经收到了哪些数据; 从而让发送端<strong>下一次从相应位置开始发</strong>。</p>
+<p>这个序列号也解决了数据到达先后顺序的问题。</p>
+<hr>
+<h4 id="超时重传机制"><a href="#超时重传机制" class="headerlink" title="超时重传机制"></a>超时重传机制</h4><p>网络通信中可能存在这种情况:主机A发送数据给B之后, 可能因为<strong>网络拥堵</strong>等原因, <strong>数据无法到达主机B</strong>;</p>
+<p>那么如果主机A<strong>在一个特定时间间隔内</strong>没有收到B发来的<strong>确认应答</strong>, <strong>就会进行重发</strong>;</p>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/8265adb6503c1d27e48ddd8ef29bff55.png" alt="在这里插入图片描述" style="zoom:67%;" />
+
+<p>情况二:数据到达了主机B，但是主机B的确认应答消息丢失了,那么A还是以为自己的数据没到，再次发送相同消息;这不就重复了吗？</p>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/56dca2f5a5fb850c46e106a421c8b3c5.png" alt="在这里插入图片描述" style="zoom:67%;" />
+
+<p>没关系,既然B之前已经收到了A的1~1000消息,那么<strong>确认序号就是1001发回A</strong>，即便A没收到确认，但是之后<strong>主机B意识到消息重复了，然后舍弃</strong>;</p>
+<p>以上TCP超时重传机制也保证了TCP的可靠性;</p>
+<p><strong>那么这个重传所需要等待的时间怎么规范呢？</strong></p>
+<p>时间太长，影响整体效率;时间太短，相同数据包可能重复发送;因此,TCP为了保证无论在任何环境下都能比较高性能的通信, 因此会动态计算这个最大超时时间;</p>
+<p>Linux中(BSD Unix和Windows也是如此), <strong>超时以500ms为一个单位进行控制</strong>, 每次<strong>判定超时重发的超时时间</strong>都是- <strong>500ms的整数倍</strong>.<br>如果重发一次之后, 仍然得不到应答, 等待 <strong>2</strong>*500ms 后再进行重传.<br>如果仍然得不到应答, 等待 <strong>4</strong>*500ms 进行重传. 依次类推, <strong>以指数形式递增</strong>.<br><strong>累计到一定的重传次数</strong>, TCP认为网络或者对端主机出现异常, <strong>强制关闭连接</strong>,释放资源。</p>
+<hr>
+<h4 id="连接管理机制"><a href="#连接管理机制" class="headerlink" title="连接管理机制"></a>连接管理机制</h4><p><img src="https://i-blog.csdnimg.cn/blog_migrate/bb37f986f14bcdf93d6f294cd045613e.png" alt="在这里插入图片描述"></p>
+<h3 id="三次握手——TCP建立连接"><a href="#三次握手——TCP建立连接" class="headerlink" title="三次握手——TCP建立连接"></a>三次握手——TCP建立连接</h3><p>三次握手是由客户端<strong>connect()<strong>主动发起，之后由</strong>操作系统内部建立</strong>，accpet只是把建立连接的结果拿上到应用层;</p>
+<ol>
+<li>客户端把含有SYN(同步报文段)标志位的报文发给server请求建立连接；</li>
+<li>server系统内部发回给client带有SYN+ACK标志位的报文，表示已收到，确认允许连接请求;</li>
+<li>client收到确认信息后，发送ACK确认报文给server;</li>
+</ol>
+<p>因为connect与accept都是应用层上拿到连接的接口，则<strong>建立连接的具体过程由双方操作系统内部建立起来连接并将连接返回给connect()与accept(),我们可以通过他们的返回值判断连接是否建立成功</strong>！(<strong>连接由connect发起，操作系统内部自动完成！accpet只是看结果用</strong>);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">为什么是3次连接？</span><br><span class="line">两次握手不够：无法解决历史连接的干扰问题，也无法确认客户端是否正确接收了服务器的初始序列号。</span><br><span class="line">四次握手多余：会增加连接建立的时间和网络开销，而三次握手已经能够满足可靠性和效率的平衡。</span><br></pre></td></tr></table></figure>
+
+<h3 id="四次挥手——TCP断开连接"><a href="#四次挥手——TCP断开连接" class="headerlink" title="四次挥手——TCP断开连接"></a>四次挥手——TCP断开连接</h3><ol>
+<li>每次挥手由断开方调用close(连接sock)发起挥手给对方发送FIN（结束报文段）；</li>
+<li>在对方收到断开消息后，回应ACK，表示数据还未发完，稍等一下；</li>
+<li>并准备数据处理完后，调用close(sock)与之也准备进行挥手断开；</li>
+<li>同时等待ACK（last_ack）;</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">为什么是四次挥手而不是三次挥手？</span><br><span class="line">三次挥手无法确保数据完整传输：如果接收方还有数据未发送，仅用三次挥手可能会导致数据丢失。</span><br><span class="line">四次挥手能够兼顾可靠性和效率：通过两次FIN和两次ACK，确保双方都能安全地关闭连接。</span><br></pre></td></tr></table></figure>
+
+<h3 id="关于TIME-WAIT状态"><a href="#关于TIME-WAIT状态" class="headerlink" title="关于TIME_WAIT状态"></a>关于<code>TIME_WAIT</code>状态</h3><p><code>TIME_WAIT</code>状态是TCP协议中一个重要的机制，其主要作用是：</p>
+<ol>
+<li><strong>确保最后一个<code>ACK</code>报文能够被对方收到</strong>：如果对方没有收到<code>ACK</code>报文，可能会重新发送<code>FIN</code>报文，此时<code>TIME_WAIT</code>状态可以<strong>确保连接不会被过早关闭</strong>。</li>
+<li><strong>防止历史连接的干扰</strong>：等待<strong>2MSL</strong>（2倍报文最大生存时间）时间，确保网络中残留的报文能够被清理干净，避免对后续连接造成干扰。</li>
+</ol>
+<p><strong>三次握手和四次挥手充分体现了标志位对区分普通报文和建立连接时的请求\应答报文的重要性。</strong></p>
+<hr>
+<h4 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h4><p>顾名思义，这个机制类似与算法里的滑动窗口;</p>
+<p>之前我们提到过TCP的确认<strong>应答策略</strong>，即对于连接双方发送的每一个数据端，都需要进行ACK确认应答，收到ACK后再发送下一个数据段，但这样做有一个明显的缺陷，<strong>串行</strong>就是性能较差，尤其是数据往返时间较长的时候：</p>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/214b347d78ef511b1239d4fd4467ea25.png" alt="在这里插入图片描述" style="zoom: 50%;" />
+
+<p>引入<strong>滑动窗口</strong>机制;我们将<strong>发送缓冲区</strong>分为三个部分：</p>
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/be23ce351c07e0b1ab3372b829ca25e1.png" alt="在这里插入图片描述"></p>
+<p>其中红色标注部分就是滑动窗口，也就是说<strong>滑动窗口本质是发送缓冲区的一部分</strong>，其因为应发送的数据不断变化，而区域也不断变化，就像在滑动一样，故称为滑动窗口。</p>
+<p>TCP协议报头里的<strong>16位窗口大小</strong>就是这个滑动窗口的大小,他的大小是受接收方接收缓冲区可用大小制约的，这个大小通过之前通信时接收方发来报头里的<strong>确认序号</strong>传递;</p>
+<p><strong>串行</strong>效率差我们来<strong>并行</strong>：</p>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/fee2649576b5dee25091b51adaf1890f.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+<ul>
+<li>窗口大小指的是<strong>无需等待确认应答而可以继续发送数据的最大值</strong>. 上图的窗口大小就是4000个字节(四个段)</li>
+<li>发送前四个段的时候, 不需要等待任何 ACK, 直接发送</li>
+<li><strong>收到第一个段的ACK后, 滑动窗口向后移动, 继续发送第五个段的数据; 依次类推</strong></li>
+<li>操作系统内核为了维护这个滑动窗口, 需要开辟 发送缓冲区 来记录当前还有哪些数据没有应答; 只有确认应答过的数据, 才能从缓冲区删掉;</li>
+<li><strong>窗口越大, 则网络的吞吐率就越高</strong>;</li>
+</ul>
+<p>滑动窗口可以让发送方<strong>一次发送大量数据</strong>，从而保证效率。</p>
+<p>滑动窗口可以<strong>配合</strong>对端的接收能力，来<strong>实现流量控制</strong>。</p>
+<hr>
+<h4 id="快重传"><a href="#快重传" class="headerlink" title="快重传"></a>快重传</h4><p>在并发传送数据过程中发生了丢包，除了超时重传机制应该怎么解决，这里分两种情况：</p>
+<p>情况1:</p>
+<p>数据包已经抵达, ACK被丢了</p>
+<p>这种情况很容易解决，因为假设A的1~1000数据发过去了，但是B发回来的ack没收到，那么如果B发回来的2001或者更大位置的ack被A收到了(B一定是按顺序收的，如果收到大的index数据，那么证明之前的小序列号的数据已经收了)，则证明A的1~1001其实已经被B收到了，只是ack丢了，不用重新发1~1000了;</p>
+<p>情况2：</p>
+<p>发送的数据发生了丢包</p>
+<p>假如A的1~1000发过去了，那么此时B只收到了1~1000，提醒A下一个是1001以后，A发给B的1001~2000数据丢了！那么B将收不到1001，即便是之后的2001~3000，3001~4000都过来了，B也不能收，只能先存缓冲区，并且返回接下来应该收到的序列1001;</p>
+<p>如果A连续收到3次同样的ACK以后，就会意识到自己这个数据包丢了，然后重新发送给B,此时B终于拿到1001，紧接着把之前存到缓冲区的2000 ~3000 ~4000的数据拼起来，最后直接返回个4001ACK给A，A之后就能从4001继续传输数据了;</p>
+<p>这种<strong>对付丢包问题的机制就被称为“高速重发机制”（也被叫做“快重传”）</strong>;</p>
+<p>这种快重传(效率)可以理解为<strong>并发大量数据包时候的一种丢包处理方法，与超时重传(可靠性)不矛盾</strong>;</p>
+<hr>
+<h4 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h4><p>其实,在引入滑动窗口这个机制后，流量控制自然显现出来了；流量控制是TCP协议中保证效率的一个重要措施</p>
+<p><strong>接收端处理数据的速度是有限的</strong>，如果发送端发的太快, 导致接收端的<strong>缓冲区被打满</strong>, 这个时候如果发送端继续发送,就会造成丢包, 继而引起超时重传等等一系列连锁反应。</p>
+<p>因此TCP支持<strong>根据接收端的处理能力, 来决定发送端的发送速度</strong>. 这个机制就叫做流量控制(Flow Control);</p>
+<ul>
+<li>接收端将自己可以接收的缓冲区大小放入 TCP 首部中的 “窗口大小” 字段, 通过ACK端通知发送端;<br>窗口大小字段越大, 说明网络的吞吐量越高;</li>
+<li>接收端一旦发现自己的缓冲区快满了, 就会将窗口大小设置成一个更小的值通知给发送端;发送端接受到这个窗口之后, 就会减慢自己的发送速度;</li>
+<li>如果接收端缓冲区满了, 就会将窗口置为0; 这时发送方不再发送数据, 但是需要<strong>定期发送一个窗口探测数据段, 使接收端把窗口大小告诉发送端</strong>同时防止接收端的窗口更新通知丢失，也要定期发送窗口探测数据包。</li>
+</ul>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/2570717e7c97eed2a51e1e7fd14200c6.png" alt="在这里插入图片描述" style="zoom:50%;" />
+
+<p>至于接收端如何把窗口大小告诉发送端呢?</p>
+<p>之前我们介绍的<strong>TCP首部中, 有一个16位窗口字段</strong>, 就是存放了窗口大小信息;建立连接的时候就能给到发送端;<br>那么问题来了, 16位数字最大表示65535, 那么TCP窗口最大就是65535字节么?<br>实际上, TCP首部40字节选项中还包含了一个<strong>窗口扩大因子M</strong>, 实际窗口大小是 <strong>窗口字段的值左移 M 位</strong>。</p>
+<hr>
+<h4 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h4><p>在刚开始阶段就发送大量的数据, 仍然可能引发问题.因为网络上有很多的计算机, 可能当前的网络状态就已经比较拥堵. <strong>在不清楚当前网络状态下, 贸然发送大量的数据, 是很有可能引起雪上加霜</strong>的.</p>
+<p>TCP引入慢启动机制, <strong>先发少量的数据</strong>, 探探路, <strong>摸清当前的网络拥堵状态</strong>, 再决定按照多大的速度传输数据.</p>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/8745fdcc4de240a1ebd84c6d89404f37.png" alt="在这里插入图片描述" style="zoom:67%;" />
+
+<ul>
+<li>此处引入一个概念程为<strong>拥塞窗口</strong>，发送开始的时候, <strong>定义拥塞窗口大小为1</strong>，每次收到一个ACK应答, 拥塞窗口加1(相当于每次启动拥塞窗口大小是上次的一倍);</li>
+<li>每次发送数据包的时候, 将拥塞窗口和<strong>接收端主机反馈的窗口大小</strong>做比较, <strong>取较小</strong>的值作为实际发送的窗口;</li>
+</ul>
+<p>像上面这样的拥塞窗口增长速度, 是指数级别的. “<strong>慢启动</strong>” 只是指<strong>初使时慢</strong>, 但是<strong>增长速度非常快</strong></p>
+<ul>
+<li>为了不增长的那么快, 因此不能使拥塞窗口单纯的加倍,此处引入一个叫做<strong>慢启动的阈值</strong></li>
+<li>当拥塞窗口<strong>超过这个阈值</strong>的时候, <strong>不再按照指数方式增长</strong>, 而是按照<strong>线性方式</strong>增长</li>
+</ul>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/36b541e5494dfacd2ed6fc455b5019fb.png" alt="在这里插入图片描述" style="zoom:67%;" />
+
+<ul>
+<li>当TCP通信开始后, 网络吞吐量会逐渐上升;</li>
+<li>如之后如果网络发生拥塞,拥塞控制生效，吞吐量会立刻下降;</li>
+<li>这里的拥塞判断有不同策略：1.发生快重传(连续收到重复确认的次数维度) 2. 发生超时重传(等待确认的时间维度)</li>
+</ul>
+<p><strong>拥塞控制, 归根结底是TCP协议想尽可能快的把数据传输给对方, 但是又要避免给网络造成太大压力的折中方案</strong></p>
+<hr>
+<h3 id="延迟应答"><a href="#延迟应答" class="headerlink" title="延迟应答"></a>延迟应答</h3><p>关于确认应答机制，如果接收数据的主机<strong>立刻返回ACK应答</strong>, 这时候返回的窗口可能比较小;</p>
+<ul>
+<li>假设接收端缓冲区为1M. 一次收到了500K的数据; 如果立刻应答, 返回的窗口就减少500K;</li>
+<li>但实际上可能处理端处理的速度很快, 10ms之内就把500K数据从缓冲区消费掉了</li>
+<li>在这种情况下, 接收端处理还远没有达到自己的极限, 即使窗口再放大一些（把这500k加上）, 也能处理过来</li>
+<li>因此如果<strong>接收端稍微等一会再应答</strong>, 比如等待200ms再应答, 那么这个时候<strong>返回的窗口大小就是1M，显然吞吐量加大了，这就是延迟应答</strong>;</li>
+</ul>
+<p><img src="https://i-blog.csdnimg.cn/blog_migrate/2ee420a2b6f843002844f323c0f27f72.png" alt="在这里插入图片描述"></p>
+<p>窗口越大, 网络吞吐量就越大, 传输效率就越高. 我们的目标是在保证网络不拥塞的情况下尽量提高传输效率;</p>
+<p>延迟应答的具体方式有两种:</p>
+<ul>
+<li>数量限制: 每隔N个包就应答一次(如上图),一般N &#x3D; 2;</li>
+<li>时间限制: <strong>超过最大延迟时间就应答一次</strong>，一般T&#x3D; 200ms，注意，这个延迟时间<strong>应远小于</strong>超时重传时间，不然就帮倒忙了;</li>
+</ul>
+<hr>
+<h4 id="捎带应答"><a href="#捎带应答" class="headerlink" title="捎带应答"></a>捎带应答</h4><p>在延迟应答的基础上, 我们发现, 很多情况下, 客户端服务器在应用层也是 “<strong>一个发送数据，一个确认收到</strong>” 的. 意味着接收方需要发送确认收到的报文给发送方;</p>
+<p>可是往往接收方也需要回复数据给确认方，那么就可以<strong>回复ACK顺便捎带上数据</strong>了。</p>
+<p>通过抓包工具，可以发现四次挥手怎么只有三次？原因是确认方收到断开信息以后，自己也要断开，就把2，3次挥手用<strong>捎带应答优化</strong>了！</p>
+<hr>
+<h4 id="TCP异常处理"><a href="#TCP异常处理" class="headerlink" title="TCP异常处理"></a>TCP异常处理</h4><ol>
+<li>进程终止: 进程终止会释放文件描述符,此时TCP连接还在,仍然可以发送FIN. 和正常关闭没有什么区别.</li>
+<li>机器重启: 和进程终止的情况相同;</li>
+<li>机器掉电&#x2F;网线断开: 接收端认为连接还在, 一旦接收端有写入操作, 接收端发现连接已经不在了, 就会进行reset. 即使没有写入操作, TCP自己也内置了一个保活定时器, 会定期询问对方是否还在. <strong>如果对方不在, 也会把连接释放</strong>.另外, 应用层的某些协议, 也有一些这样的检测机制. 例如HTTP长连接中, 也会<strong>定期检测对方的状态</strong>. 例如QQ, 在QQ断线之后, 也会定期尝试重新连接.</li>
+</ol>
+<p>此外,TCP在面对异常情况可能会发送RST包（重新建立连接请求）。发送RST包的情况通常有：1、端口未打开；2、请求超时；3、提前关闭；4、在一个已关闭的socket上收到数据</p>
+<hr>
+<h4 id="面向字节流特性"><a href="#面向字节流特性" class="headerlink" title="面向字节流特性"></a>面向字节流特性</h4><p>由于<strong>读&#x2F;写缓冲区的存在</strong>，TCP程序的<strong>读和写</strong>操作<strong>不需要一一匹配</strong>:</p>
+<ul>
+<li>写100个字节数据时, 可以调用一次write写100个字节, 也可以调用100次write, 每次写一个字节;</li>
+<li>读100个字节数据时, 也完全不需要考虑写的时候是怎么写的, 既可以一次read 100个字节, 也可以一次read一个字节, 重复100次。</li>
+</ul>
+<p>TCP如果发送的字节数太长, 会被拆分成多个TCP的数据包发出; 如果发送的字节数太短, 就会先在缓冲区里等待, 等到缓冲区长度差不多了, 或者其他合适的时机发送出 去;</p>
+<p>而<strong>UDP只有接收缓冲区,是面向数据包的</strong>，<strong>固定的发送与读取</strong>！</p>
+<hr>
+<h3 id="粘包问题"><a href="#粘包问题" class="headerlink" title="粘包问题"></a>粘包问题</h3><p>粘包问题中的 “包” , 是指的<strong>应用层的数据包</strong>，不是分离报头和有效载荷的报;</p>
+<p>站在传输层的角度, TCP是一个一个报文过来的. 按照报头里的序号排好序放在缓冲区中，而站在应用层的角度, 看到的只是一串连续的字节数据，那么应用程序看到了这么一连串的字节数据, 就<strong>不知道从哪个部分开始到哪个部分, 是一个完整的应用层数据包</strong>——<strong>不会分割</strong><br><img src="https://i-blog.csdnimg.cn/blog_migrate/039ca07e2df5ec051ea399836a82b8c9.png" alt="在这里插入图片描述"></p>
+<p>解决方法:<strong>明确两个包之间的边界</strong></p>
+<ul>
+<li>对于<strong>定长</strong>的包,保证每次都<strong>按固定大小读取</strong>即可;eg:没内容的HTTP请求报文Request，就直接按sizeof(Request)单位大小读取;</li>
+<li>对于<strong>变长</strong>的包,发送方可以<strong>在包头的位置, 添加约定一个包总长度的字段length</strong>,从而就知道了包的结束位置;接收方就有能力根据单位length分开不同的包了;&#x2F;&#x2F;TCP</li>
+<li>对于<strong>变长</strong>的包, 还可以<strong>在包和包之间使用明确的分隔符</strong>(应用层协议, 是程序猿自己来定的, 只要保证分隔 符不和正文冲突即可) eg：HTTP的报头与body正文的分隔符空行&#x2F;n这种规定的方式，在包与包之间加特殊分隔符;</li>
+</ul>
+<p><strong>UDP不需要考虑粘包：</strong></p>
+<ul>
+<li>UDP<strong>报头</strong>本身就存在<strong>数据包长度</strong>，按照那个大小就能有效读取;</li>
+<li>面向数据报，要么收到完整的UDP报文, 要么不收;不会出现”不完整的半个”的情况.</li>
+</ul>
+<hr>
+<h3 id="第二种：UDP协议"><a href="#第二种：UDP协议" class="headerlink" title="第二种：UDP协议"></a><strong>第二种：UDP协议</strong></h3><p>英文名：User Datagram Protocol 中文名：<strong>数据报协议</strong> 协议说明：UDP是一种<strong>面向无连接的</strong>传输层通信协议。</p>
+<p>举例：发短信，<strong>不需要双方建立连接</strong>，But，数据报的大小应限制在64k以内</p>
+<p>特点：<strong>效率高，数据传输不安全，容易丢包</strong></p>
+<ul>
+<li><p><strong>无连接</strong>: 知道对端的IP和端口号就直接进行传输, 不需要建立连接;</p>
+</li>
+<li><p><strong>不可靠</strong>: <strong>没有确认机制, 没有重传机制</strong>; 如果因为网络故障该段无法发到对方, UDP协议层也不会给应用层 返回任何错误信息;</p>
+</li>
+<li><p><strong>面向数据报</strong>: <strong>不能够灵活的控制读写数据的次数和数量</strong>;</p>
+</li>
+</ul>
+<hr>
+<h3 id="TCP与UDP对比"><a href="#TCP与UDP对比" class="headerlink" title="TCP与UDP对比"></a>TCP与UDP对比</h3><p>我们既然说了TCP是可靠连接，那么是不是TCP就一定优于UDP呢？这个问题已经老生常谈了。<br>TCP和UDP的优缺点不能简单、绝对的进行比较。</p>
+<ul>
+<li>TCP用于可靠传输的情况，<strong>应用于文件传输，重要状态更新等场景</strong>，其也有一系列提高效率的机制保证效率。</li>
+<li>UDP用于<strong>对高速传输和实时性要求较高的通信领域</strong>，比如早期的qq，视频传输等。另外UDP可以用于广播。</li>
+</ul>
+<p><strong>UDP实现可靠传输</strong>;（经典面试题）&#x2F;<strong>&#x2F;回答tcp可靠性的的核心方法</strong></p>
+<ul>
+<li><p><strong>引入确认应答</strong>, 确保对端收到了数据;</p>
+</li>
+<li><p><strong>引入超时重传</strong>, 如果隔一段时间没有应答, 就重发数据;</p>
+</li>
+<li><p><strong>引入序列号</strong>, 保证数据顺序;</p>
+</li>
+</ul>
+<hr>
+<h2 id="四、三要素关系图与网络模型图"><a href="#四、三要素关系图与网络模型图" class="headerlink" title="四、三要素关系图与网络模型图"></a><strong>四、三要素关系图与网络模型图</strong></h2><p><strong>1、网络编程三要素关系图</strong></p>
+<img src="https://img2020.cnblogs.com/other/1218593/202106/1218593-20210616075442940-2118574705.png" alt="img" style="zoom:50%;" />
+
+<p><strong>2、OSI参考模型与TCP&#x2F;IP参考模型</strong></p>
+<img src="https://img2020.cnblogs.com/other/1218593/202106/1218593-20210616075443290-934582443.png" alt="img" style="zoom:50%;" />
+
+</div><div class="article-licensing box"><div class="licensing-title"><p>TCP/UDP网络编程</p><p><a href="https://boneskeep.github.io/2025/01/07/TCPUDP网络编程/">https://boneskeep.github.io/2025/01/07/TCPUDP网络编程/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>BONESKEEP</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2025-01-07</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2025-03-24</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Linux/">Linux</a></div><!--!--></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="/img/wechat.jpg" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2025/01/08/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">进程间通信</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2025/01/07/%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6/"><span class="level-item">进程调度</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/head_circle.png" alt="BONESKEEP"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">BONESKEEP</p><p class="is-size-6 is-block">硕士研究生</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Lanzhou University of Technology</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">76</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">14</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/BONESKEEP" target="_blank" rel="me noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Github" href="https://github.com/BONESKEEP"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="QQ" href="https://qm.qq.com/q/4kKCYBUmaA"><i class="fab fab fa-qq"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Mail" href="mailto:coolhui2020@163.com"><i class="fas fa-envelope"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><ul class="menu-list"><li><a class="level is-mobile" href="#TCP-UDP网络编程"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">TCP/UDP网络编程</span></span></a></li></ul><li><a class="level is-mobile" href="#一、IP地址"><span class="level-left"><span class="level-item">2</span><span class="level-item">一、IP地址</span></span></a></li><li><a class="level is-mobile" href="#二、端口号"><span class="level-left"><span class="level-item">3</span><span class="level-item">二、端口号</span></span></a></li><li><a class="level is-mobile" href="#三、通信协议"><span class="level-left"><span class="level-item">4</span><span class="level-item">三、通信协议</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#第一种：TCP协议"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">第一种：TCP协议</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#确认应答-ACK-机制"><span class="level-left"><span class="level-item">4.1.1</span><span class="level-item">确认应答(ACK)机制</span></span></a></li><li><a class="level is-mobile" href="#超时重传机制"><span class="level-left"><span class="level-item">4.1.2</span><span class="level-item">超时重传机制</span></span></a></li><li><a class="level is-mobile" href="#连接管理机制"><span class="level-left"><span class="level-item">4.1.3</span><span class="level-item">连接管理机制</span></span></a></li></ul></li><li><a class="level is-mobile" href="#三次握手——TCP建立连接"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">三次握手——TCP建立连接</span></span></a></li><li><a class="level is-mobile" href="#四次挥手——TCP断开连接"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">四次挥手——TCP断开连接</span></span></a></li><li><a class="level is-mobile" href="#关于TIME-WAIT状态"><span class="level-left"><span class="level-item">4.4</span><span class="level-item">关于TIME_WAIT状态</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#滑动窗口"><span class="level-left"><span class="level-item">4.4.1</span><span class="level-item">滑动窗口</span></span></a></li><li><a class="level is-mobile" href="#快重传"><span class="level-left"><span class="level-item">4.4.2</span><span class="level-item">快重传</span></span></a></li><li><a class="level is-mobile" href="#流量控制"><span class="level-left"><span class="level-item">4.4.3</span><span class="level-item">流量控制</span></span></a></li><li><a class="level is-mobile" href="#拥塞控制"><span class="level-left"><span class="level-item">4.4.4</span><span class="level-item">拥塞控制</span></span></a></li></ul></li><li><a class="level is-mobile" href="#延迟应答"><span class="level-left"><span class="level-item">4.5</span><span class="level-item">延迟应答</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#捎带应答"><span class="level-left"><span class="level-item">4.5.1</span><span class="level-item">捎带应答</span></span></a></li><li><a class="level is-mobile" href="#TCP异常处理"><span class="level-left"><span class="level-item">4.5.2</span><span class="level-item">TCP异常处理</span></span></a></li><li><a class="level is-mobile" href="#面向字节流特性"><span class="level-left"><span class="level-item">4.5.3</span><span class="level-item">面向字节流特性</span></span></a></li></ul></li><li><a class="level is-mobile" href="#粘包问题"><span class="level-left"><span class="level-item">4.6</span><span class="level-item">粘包问题</span></span></a></li><li><a class="level is-mobile" href="#第二种：UDP协议"><span class="level-left"><span class="level-item">4.7</span><span class="level-item">第二种：UDP协议</span></span></a></li><li><a class="level is-mobile" href="#TCP与UDP对比"><span class="level-left"><span class="level-item">4.8</span><span class="level-item">TCP与UDP对比</span></span></a></li></ul></li><li><a class="level is-mobile" href="#四、三要素关系图与网络模型图"><span class="level-left"><span class="level-item">5</span><span class="level-item">四、三要素关系图与网络模型图</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://github.com/BONESKEEP" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Github</span></span><span class="level-right"><span class="level-item tag">github.com</span></span></a></li><li><a class="level is-mobile" href="https://boneskeep.github.io/" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Blog</span></span><span class="level-right"><span class="level-item tag">boneskeep.github.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Game/"><span class="level-start"><span class="level-item">Game</span></span><span class="level-end"><span class="level-item tag">2</span></span></a><ul><li><a class="level is-mobile" href="/categories/Game/Games101/"><span class="level-start"><span class="level-item">Games101</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/Kunpeng/"><span class="level-start"><span class="level-item">Kunpeng</span></span><span class="level-end"><span class="level-item tag">5</span></span></a><ul><li><a class="level is-mobile" href="/categories/Kunpeng/Limb/"><span class="level-start"><span class="level-item">Limb</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/Linux/"><span class="level-start"><span class="level-item">Linux</span></span><span class="level-end"><span class="level-item tag">39</span></span></a><ul><li><a class="level is-mobile" href="/categories/Linux/App/"><span class="level-start"><span class="level-item">App</span></span><span class="level-end"><span class="level-item tag">39</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/Python/"><span class="level-start"><span class="level-item">Python</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/"><span class="level-start"><span class="level-item">学术</span></span><span class="level-end"><span class="level-item tag">7</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/3DGS/"><span class="level-start"><span class="level-item">3DGS</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/NeRF/"><span class="level-start"><span class="level-item">NeRF</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/"><span class="level-start"><span class="level-item">三维重建</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%AD%A6%E6%9C%AF/%E5%91%BD%E4%BB%A4/"><span class="level-start"><span class="level-item">命令</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/%E7%AE%97%E6%B3%95/"><span class="level-start"><span class="level-item">算法</span></span><span class="level-end"><span class="level-item tag">22</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E7%AE%97%E6%B3%95/Leetcode/"><span class="level-start"><span class="level-item">Leetcode</span></span><span class="level-end"><span class="level-item tag">22</span></span></a></li></ul></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><figure class="media-left"><a class="image" href="/2025/03/21/2025-3-21-Leetcode-Hot100-No.763-%E5%88%92%E5%88%86%E5%AD%97%E6%AF%8D%E5%8C%BA%E9%97%B4/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 763. 划分字母区间 贪心 字符串"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-21T11:00:00.000Z">2025-03-21</time></p><p class="title"><a href="/2025/03/21/2025-3-21-Leetcode-Hot100-No.763-%E5%88%92%E5%88%86%E5%AD%97%E6%AF%8D%E5%8C%BA%E9%97%B4/">Leetcode Hot100 763. 划分字母区间 贪心 字符串</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.45-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8FII/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 45. 跳跃游戏 II 贪心算法"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-20T07:00:00.000Z">2025-03-20</time></p><p class="title"><a href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.45-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8FII/">Leetcode Hot100 45. 跳跃游戏 II 贪心算法</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.55-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 55. 跳跃游戏 贪心算法"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-20T03:00:00.000Z">2025-03-20</time></p><p class="title"><a href="/2025/03/20/2025-3-20-Leetcode-Hot100-No.55-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F/">Leetcode Hot100 55. 跳跃游戏 贪心算法</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/19/2025-3-19-Leetcode-Hot100-No.24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 24. 两两交换链表中的节点 递归/迭代"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-19T11:00:00.000Z">2025-03-19</time></p><p class="title"><a href="/2025/03/19/2025-3-19-Leetcode-Hot100-No.24-%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/">Leetcode Hot100 24. 两两交换链表中的节点 递归/迭代</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article><article class="media"><figure class="media-left"><a class="image" href="/2025/03/18/2025-3-18-Leetcode-Hot100-No.19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E7%BB%93%E7%82%B9/"><img src="/img/leetcode/Shangri-La%20Frontier-01.jpg" alt="Leetcode Hot100 19. 删除链表的倒数第 N 个结点 栈 双指针"></a></figure><div class="media-content"><p class="date"><time dateTime="2025-03-18T13:00:00.000Z">2025-03-18</time></p><p class="title"><a href="/2025/03/18/2025-3-18-Leetcode-Hot100-No.19-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E7%BB%93%E7%82%B9/">Leetcode Hot100 19. 删除链表的倒数第 N 个结点 栈 双指针</a></p><p class="categories"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a> / <a href="/categories/%E7%AE%97%E6%B3%95/Leetcode/">Leetcode</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/03/"><span class="level-start"><span class="level-item">三月 2025</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/02/"><span class="level-start"><span class="level-item">二月 2025</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/01/"><span class="level-start"><span class="level-item">一月 2025</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/12/"><span class="level-start"><span class="level-item">十二月 2024</span></span><span class="level-end"><span class="level-item tag">12</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/10/"><span class="level-start"><span class="level-item">十月 2024</span></span><span class="level-end"><span class="level-item tag">29</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">九月 2024</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/06/"><span class="level-start"><span class="level-item">六月 2024</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/03/"><span class="level-start"><span class="level-item">三月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/12/"><span class="level-start"><span class="level-item">十二月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">十月 2023</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/09/"><span class="level-start"><span class="level-item">九月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/04/"><span class="level-start"><span class="level-item">四月 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Games101/"><span class="tag">Games101</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Kunpeng/"><span class="tag">Kunpeng</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Leetcode/"><span class="tag">Leetcode</span><span class="tag">22</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">39</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Python/"><span class="tag">Python</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AD%A6%E6%9C%AF/"><span class="tag">学术</span><span class="tag">7</span></a></div></div></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/head_circle.png" alt="BONESKEEP&#039; BLOG" height="28"></a><p class="is-size-7"><span>&copy; 2025 BONESKEEP</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">Open Source</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
